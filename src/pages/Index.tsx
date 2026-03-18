@@ -9,23 +9,29 @@ import TransactionsPanel from "@/components/Index/TransactionsPanel";
 
 const Index = () => {
   return (
-    <div className="bg-white text-slate-800 h-full min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
+    <div className="bg-white text-slate-800 min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
       <Sidebar />
-      <main className="flex-1 lg:ml-64 h-full min-h-screen relative overflow-y-auto pb-20 lg:pb-0">
-        <Navigation />
-        <Header />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <ProfileCardPanel />
-            <TransactionsPanel />
+      <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
+        <main className="flex-1 relative overflow-y-auto pb-8">
+          <Navigation />
+          <Header />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <ProfileCardPanel />
+              <TransactionsPanel />
+            </div>
           </div>
-        </div>
+          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 lg:pb-10">
+            <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+              이번달 지출 분석
+            </h3>
+            <div className="bg-white rounded-3xl p-4 md:p-6 lg:shadow-sm lg:border lg:border-slate-100">
+              <SpendingDonutChart />
+            </div>
+          </section>
+        </main>
         <Footer />
-        <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
-          이번달 지출 분석
-        </h3>
-        <SpendingDonutChart />
-      </main>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import type { FC } from "react";
 
 const Footer: FC = () => {
   return (
-    <footer className="bg-white border-t border-slate-100 py-8 px-8 mt-auto hidden lg:block">
+    <footer className="bg-white border-t border-slate-100 py-6 px-4 sm:px-8 mt-auto w-full">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
         <p id="idjuar">© 2024 AI.Receipt Inc. All rights reserved.</p>
         <div className="flex gap-6 mt-4 md:mt-0">
