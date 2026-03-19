@@ -1,28 +1,38 @@
 import { useEffect, useRef } from "react";
+import { getMonthlySummary } from "../../lib/receiptStore";
 
 export default function SpendingDonutChart() {
   const chartRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let isMounted = true;
     const loadChart = async () => {
       try {
         const Plotly = await import("plotly.js-dist-min");
 
-        if (!chartRef.current) return;
+        if (!chartRef.current || !isMounted) return;
 
-        const totalBudget = 200000;
-        const remaining = 104938;
-        const spent = totalBudget - remaining;
+        const { receipts, remaining, budget } = getMonthlySummary();
+        const spent = budget - remaining;
 
-        const foodSpent = Math.round(spent * 0.4);
-        const cafeSpent = Math.round(spent * 0.3);
-        const convenienceSpent = Math.round(spent * 0.2);
-        const bakerySpent = spent - foodSpent - cafeSpent - convenienceSpent;
+        const foodSpent = receipts
+          .filter((r) => r.category === "식당")
+          .reduce((sum, r) => sum + r.amount, 0);
+        const cafeSpent = receipts
+          .filter((r) => r.category === "카페")
+          .reduce((sum, r) => sum + r.amount, 0);
+        const convenienceSpent = receipts
+          .filter((r) => r.category === "편의점")
+          .reduce((sum, r) => sum + r.amount, 0);
+        const bakerySpent = Math.max(
+          0,
+          spent - foodSpent - cafeSpent - convenienceSpent,
+        );
 
         const spendingData = [
           {
             values: [foodSpent, cafeSpent, convenienceSpent, bakerySpent, remaining],
-            labels: ["식비", "카페", "편의점", "베이커리", "남은 식비"],
+            labels: ["식비", "카페", "편의점", "기타", "남은 식비"],
             type: "pie" as const,
             hole: 0.65,
             marker: {
@@ -81,7 +91,15 @@ export default function SpendingDonutChart() {
 
     loadChart();
 
+    const handler = () => {
+      // 차트 재렌더링(간단하게 새로 그림)
+      loadChart();
+    };
+    window.addEventListener("receipts-updated", handler);
+
     return () => {
+      isMounted = false;
+      window.removeEventListener("receipts-updated", handler);
       if (chartRef.current) {
         import("plotly.js-dist-min").then((Plotly) => {
           Plotly.purge(chartRef.current!);

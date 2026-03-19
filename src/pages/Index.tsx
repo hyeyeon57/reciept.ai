@@ -6,8 +6,25 @@ import ProfileCardPanel from "@/components/Index/ProfileCardPanel";
 import Sidebar from "@/components/layout/Sidebar";
 import SpendingDonutChart from "@/components/Index/SpendingDonutChart";
 import TransactionsPanel from "@/components/Index/TransactionsPanel";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // 영수증 등록 후 홈으로 왔을 때, 마운트된 뒤에 갱신 이벤트를 보내서 최근기록/도넛/한도가 반영되게 함
+  useEffect(() => {
+    const state = location.state as { fromUpload?: boolean } | undefined;
+    if (location.pathname === "/" && state?.fromUpload) {
+      const t = setTimeout(() => {
+        window.dispatchEvent(new Event("receipts-updated"));
+      }, 50);
+      navigate(".", { replace: true, state: {} });
+      return () => clearTimeout(t);
+    }
+  }, [location.pathname, location.state, navigate]);
+
   return (
     <div className="bg-white text-slate-800 min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
       <Sidebar />

@@ -9,17 +9,17 @@ import {
   faFileInvoiceDollar,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import profileImg from "../../../img/img2.jpg";
 
 export default function Sidebar() {
   const location = useLocation();
 
   const navItems = [
     { icon: faHouse, label: "홈", path: "/" },
-    { icon: faChartPie, label: "영수증 등록하기", path: "/" },
-    { icon: faWallet, label: "상세 영수증 내역 보기", path: "/" },
-    { icon: faUser, label: "관리자에게 전송하기", path: "/" },
-    { icon: faFileInvoiceDollar, label: "엑셀로 출력하기", path: "/" },
-    { icon: faUser, label: "로그아웃", path: "/" },
+    { icon: faChartPie, label: "영수증 등록하기", path: "/upload" },
+    { icon: faWallet, label: "상세 영수증 내역 보기", path: "/expenses" },
+    { icon: faFileInvoiceDollar, label: "제출 서류 생성", path: "/documents" },
+    { icon: faUser, label: "로그아웃", path: "/login" },
   ];
 
   return (
@@ -35,14 +35,10 @@ export default function Sidebar() {
       </div>
       <div className="flex items-center gap-3 px-4 py-2">
         <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden">
-          <img
-            alt="User"
-            className="w-full h-full object-cover"
-            src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg"
-          />
+          <img alt="User" className="w-full h-full object-cover" src={profileImg} />
         </div>
         <div>
-          <p className="text-sm font-bold text-slate-800">김철수</p>
+          <p className="text-sm font-bold text-slate-800">장혜연</p>
           <p className="text-xs text-slate-500">Premium Plan</p>
         </div>
       </div>
