@@ -149,6 +149,8 @@ const ReceiptUpload = () => {
     }
 
     // 로컬스토리지에 영수증 저장
+    // 여러 장 업로드 시 이미지 dataURL 때문에 localStorage 용량 초과가 날 수 있어
+    // 영수증 메타데이터만 저장합니다.
     addReceipts(
       drafts.map((d) => ({
         id: d.id,
@@ -157,7 +159,6 @@ const ReceiptUpload = () => {
         amount: Number(d.form.amount),
         category: d.form.category,
         tags: d.form.tags,
-        image: d.image,
       })),
     );
 
